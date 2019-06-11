@@ -5,8 +5,10 @@ class Order extends Component {
   renderOrder = key => {
     const fish = this.props.fishes[key];
     const count = this.props.order[key];
-    const isAvailable = fish.status === "available";
+    const isAvailable = fish && fish.status === "available";
 
+    // Make sure the fish is loaded before we continue
+    if (!fish) return null;
     if (!isAvailable) {
       return (
         <li key={key}>
@@ -17,7 +19,7 @@ class Order extends Component {
     return (
       <li key={key}>
         {count} lbs {fish.name}
-        {formatPrice(count * fish.price)}
+        &nbsp;{formatPrice(count * fish.price)}
       </li>
     );
   };
@@ -40,7 +42,7 @@ class Order extends Component {
         <h2>Order</h2>
         <ul className="order">{orderIds.map(this.renderOrder)}</ul>
         <div className="total">
-          <strong>{formatPrice(total)}</strong>
+          <strong>Total: {formatPrice(total)}</strong>
         </div>
       </div>
     );
